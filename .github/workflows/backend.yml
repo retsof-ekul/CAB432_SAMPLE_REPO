@@ -1,0 +1,42 @@
+name: Backend CI
+
+# Only run on changes to backend directories
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'backend/**'
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    env:
+      JWT_SECRET: TEST-SECRET
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+
+      - name: Install dependencies
+        working-directory: backend
+        run: uv sync
+
+      - name: Run backend tests
+        working-directory: backend
+        run: uv run pytest
+
+      - name: Start server
+        working-directory: backend
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: uv run fastapi run src/main.py --port 8000 &
+
+      - name: Check server is running
+        run: curl --retry 5 --retry-delay 2 --retry-connrefused --fail http://127.0.0.1:8000/health

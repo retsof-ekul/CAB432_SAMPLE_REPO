@@ -1,0 +1,32 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from src.routers import auth, events, groups, time_slots, users, units
+from src.database import engine, Base
+
+# Make sure models definitely get imported
+from src.models import user, group, unit, unit_event
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+Base.metadata.create_all(bind=engine)
+
+@app.get("/health", tags=["Health"])
+def health_check():
+    '''Returns the status of the API server'''
+    return {"status": "ok"}
+
+# Routers
+app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
+app.include_router(users.router, prefix="/users", tags=["Users"])
+app.include_router(groups.router, prefix="/groups", tags=["Groups"])
+app.include_router(units.router, prefix="/units", tags=["Units"])
+app.include_router(time_slots.router, prefix="/time-slots", tags=["Time slots"])
+app.include_router(events.router, prefix="/events", tags=["Event Log"])

@@ -1,0 +1,72 @@
+# Account-level roles
+USER_ROLE_STUDENT = "student"
+USER_ROLE_COORDINATOR = "unit_coordinator"
+USER_ROLES: tuple[str, ...] = (USER_ROLE_STUDENT, USER_ROLE_COORDINATOR)
+
+# Unit roles
+UNIT_ROLE_OWNER = "owner"
+UNIT_ROLE_ADMINISTRATOR = "administrator"
+UNIT_ROLE_STUDENT = "student"
+UNIT_ROLES: tuple[str, ...] = (UNIT_ROLE_OWNER, UNIT_ROLE_ADMINISTRATOR, UNIT_ROLE_STUDENT)
+UNIT_STAFF_ROLES: tuple[str, ...] = (UNIT_ROLE_OWNER, UNIT_ROLE_ADMINISTRATOR)
+
+# Where a unit sits in its group formation window
+FORMATION_NOT_OPEN = "not_open"
+FORMATION_OPEN = "open"
+FORMATION_CLOSED = "closed"
+
+# Group lifecycles
+GROUP_LIFECYCLE_ACTIVE = "active"
+GROUP_LIFECYCLE_DISSOLVED = "dissolved"
+GROUP_LIFECYCLES: tuple[str, ...] = (GROUP_LIFECYCLE_ACTIVE, GROUP_LIFECYCLE_DISSOLVED)
+
+# Group statuses
+GROUP_STATUS_PENDING = "pending"
+GROUP_STATUS_PROVISIONAL = "provisional"
+GROUP_STATUSES: tuple[str, ...] = (GROUP_STATUS_PENDING, GROUP_STATUS_PROVISIONAL)
+
+# Audit log events
+UNIT_EVENT_MEMBER_JOINED = "unit.member_joined"
+UNIT_EVENT_MEMBER_LEFT = "unit.member_left"
+UNIT_EVENT_ROLE_CHANGED = "unit.role_changed"
+UNIT_EVENT_OWNERSHIP_TRANSFERRED = "unit.ownership_transferred"
+UNIT_EVENT_CODE_ROTATED = "unit.code_rotated"
+GROUP_EVENT_CREATED = "group.created"
+GROUP_EVENT_DELETED = "group.deleted"
+GROUP_EVENT_MEMBER_JOINED = "group.member_joined"
+GROUP_EVENT_MEMBER_ADDED = "group.member_added"
+GROUP_EVENT_MEMBER_LEFT = "group.member_left"
+GROUP_EVENT_MEMBER_REMOVED = "group.member_removed"
+GROUP_EVENT_STATUS_CHANGED = "group.status_changed"
+EVENT_TYPES: tuple[str, ...] = (
+    UNIT_EVENT_MEMBER_JOINED,
+    UNIT_EVENT_MEMBER_LEFT,
+    UNIT_EVENT_ROLE_CHANGED,
+    UNIT_EVENT_OWNERSHIP_TRANSFERRED,
+    UNIT_EVENT_CODE_ROTATED,
+    GROUP_EVENT_CREATED,
+    GROUP_EVENT_DELETED,
+    GROUP_EVENT_MEMBER_JOINED,
+    GROUP_EVENT_MEMBER_ADDED,
+    GROUP_EVENT_MEMBER_LEFT,
+    GROUP_EVENT_MEMBER_REMOVED,
+    GROUP_EVENT_STATUS_CHANGED,
+)
+
+DEFAULT_MIN_GROUP_SIZE = 2
+MIN_MIN_GROUP_SIZE = 1
+
+DEFAULT_MAX_GROUP_SIZE = 5
+MIN_MAX_GROUP_SIZE = 2
+MAX_MAX_GROUP_SIZE = 20
+
+DAYS: tuple[str, ...] = (
+    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+)
+
+# Every hour of every day, named for the hour it starts: "monday00" .. "sunday23".
+# Ordered chronologically; TIME_SLOTS is the same set for membership checks.
+TIME_SLOT_ORDER: tuple[str, ...] = tuple(
+    f"{day}{hour:02d}" for day in DAYS for hour in range(24)
+)
+TIME_SLOTS: frozenset[str] = frozenset(TIME_SLOT_ORDER)
